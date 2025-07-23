@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafe Italia, Prague - A Stunning Welcome</title>
+    
+    <!-- Google Fonts for a sophisticated, modern aesthetic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --font-primary: 'Cormorant Garamond', serif;
+            --font-secondary: 'Poppins', sans-serif;
+            --color-primary-red: #B71C1C;
+            --color-accent-gold: #c89c6d;
+            --color-text-light: #ffffff;
+            --color-text-dark: #1f1f1f;
+            --color-background-light: #fdfdfd;
+            --color-background-dark: #1a1a1a;
+            --color-background-footer: #111111;
+        }
+
+        /* Keyframes for animations */
+        @keyframes kenBurnsPan {
+            0% { transform: scale(1.1) translate(0, 0); }
+            100% { transform: scale(1.1) translate(-3%, 2%); }
+        }
+        
+        @keyframes kenBurnsPanAlt {
+            0% { transform: scale(1.1) translate(0, 0); }
+            100% { transform: scale(1.1) translate(3%, -2%); }
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-secondary);
+            background-color: var(--color-background-light); /* Set body background */
+            overflow-x: hidden;
+        }
+
+        /* --- Global Section Title Styles --- */
+        .subtitle {
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--color-primary-red);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-family: var(--font-primary);
+            font-size: 3.5rem;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+
+        /* --- Hero Section Styles --- */
+        .hero-section {
+            height: 100vh;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            background-color: var(--color-background-light);
+        }
+
+        .hero-slideshow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center center;
+            opacity: 0;
+            transform: scale(1.1);
+            transition: opacity 2.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .slide.active {
+            opacity: 1;
+            animation-duration: 12s;
+            animation-timing-function: linear;
+            animation-fill-mode: forwards;
+        }
+        
+        .slide.active.pan-right { animation-name: kenBurnsPan; }
+        .slide.active.pan-left { animation-name: kenBurnsPanAlt; }
+
+        .content-panel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 55%;
+            height: 100%;
+            background-color: var(--color-background-light);
+            z-index: 2;
+            clip-path: polygon(0 0, 100% 0, 75% 100%, 0 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 3rem 5rem;
+        }
+
+        .header-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-nav .nav-logo img { height: 70px; transition: transform 0.4s ease; }
+        .header-nav .nav-logo img:hover { transform: scale(1.05); }
+
+        .header-nav .nav-list { display: flex; list-style: none; gap: 2.5rem; }
+
+        .header-nav .nav-link a {
+            color: var(--color-text-dark);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        
+        .header-nav .nav-link a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background-color: var(--color-primary-red);
+            transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .header-nav .nav-link a:hover::after { width: 100%; }
+
+        .hero-content {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1.5s 0.3s forwards cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .hero-content h1 {
+            font-family: var(--font-primary);
+            font-size: 5rem;
+            color: var(--color-text-dark);
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+        
+        .panel-footer { font-size: 0.9rem; font-weight: 500; color: #888; }
+        
+        .slide-dots {
+            position: absolute;
+            top: 50%; right: 40px; transform: translateY(-50%);
+            z-index: 5; display: flex; flex-direction: column; gap: 15px;
+        }
+
+        .dot {
+            width: 10px; height: 10px;
+            background-color: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%; cursor: pointer; transition: all 0.4s ease;
+        }
+
+        .dot.active {
+            background-color: var(--color-text-light);
+            transform: scale(1.3);
+            border-color: var(--color-text-light);
+        }
+
+        /* --- About Us Section Styles --- */
+        .about-section {
+            padding: 10rem 5rem;
+            background-color: var(--color-background-light);
+            display: flex;
+            align-items: center;
+            gap: 5rem;
+            overflow: hidden;
+        }
+
+        .about-image-container {
+            flex-basis: 50%;
+            position: relative;
+        }
+
+        .about-image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .about-image-container::before {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            width: 80%;
+            height: 70%;
+            background-color: var(--color-primary-red);
+            z-index: -1;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .about-image-container:hover::before {
+             bottom: -10px;
+             right: -10px;
+             transform: rotate(-1deg);
+        }
+        
+        .about-content {
+            flex-basis: 50%;
+        }
+
+        .about-content h2,
+        .contact-info-content h2 { 
+            color: var(--color-text-dark);
+        }
+        
+        .about-content .description,
+        .contact-info-content .description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 2.5rem;
+        }
+
+        .benefits-list {
+            list-style: none;
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .benefit-item { display: flex; align-items: center; gap: 1rem; }
+        
+        .benefit-item .icon { color: var(--color-primary-red); transition: transform 0.3s ease; }
+        
+        .benefit-item:hover .icon { transform: scale(1.1); }
+
+        .benefit-item .icon svg { width: 32px; height: 32px; }
+        
+        .benefit-item span { font-weight: 600; color: var(--color-text-dark); }
+        
+        /* --- Services Section Styles --- */
+        .services-section {
+            padding: 10rem 5rem;
+            background-color: var(--color-background-dark);
+            color: var(--color-text-light);
+            text-align: center;
+        }
+        
+        .section-header {
+            max-width: 800px;
+            margin: 0 auto 5rem auto;
+        }
+
+        .services-section h2, 
+        .menu-cta-content h2, 
+        .history-section .section-title, 
+        .gallery-section h2 { 
+            color: var(--color-text-light); 
+        }
+
+        .services-section .intro-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #ccc;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .service-card {
+            background-color: #222;
+            text-align: left;
+            overflow: hidden;
+        }
+
+        .service-card-image {
+            height: 220px;
+            overflow: hidden;
+        }
+
+        .service-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .service-card:hover .service-card-image img {
+            transform: scale(1.05);
+        }
+
+        .service-card-content { padding: 2rem; }
+
+        .service-card-content h3 {
+            font-family: var(--font-primary);
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .service-card-content p {
+            color: #bbb;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-card-content .card-link {
+            color: var(--color-primary-red);
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .service-card-content .card-link:hover { text-decoration: underline; }
+
+        /* --- Menu CTA Section Styles --- */
+        .menu-cta-section {
+            position: relative;
+            padding: 12rem 5rem;
+            text-align: center;
+            overflow: hidden;
+        }
+        
+        .menu-cta-background {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: url('https://i.postimg.cc/zDQyLJXx/CATERING-1.jpg');
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            z-index: 1;
+        }
+
+        .menu-cta-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
+            z-index: 2;
+        }
+
+        .menu-cta-content {
+            position: relative;
+            z-index: 3;
+            max-width: 800px;
+            margin: 0 auto;
+            color: var(--color-text-light);
+        }
+        
+        .menu-cta-content .description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #ccc;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button a {
+            background-color: var(--color-primary-red);
+            color: var(--color-text-light);
+            padding: 16px 35px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border: 2px solid var(--color-primary-red);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .cta-button a:hover {
+            background-color: transparent;
+            color: var(--color-primary-red);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(183, 28, 28, 0.2);
+        }
+
+        .menu-cta-content .cta-button a {
+            padding: 18px 40px;
+            font-size: 1.1rem;
+        }
+        
+        /* --- History Section Styles --- */
+        .history-section {
+            padding: 10rem 0;
+            background-color: var(--color-background-dark);
+            color: var(--color-text-light);
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .history-showcase {
+            margin-bottom: 3rem;
+            min-height: 100px;
+            padding: 0 1rem;
+        }
+
+        #history-date {
+            font-family: var(--font-primary);
+            font-size: 3.5rem;
+            color: var(--color-text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        #history-event {
+            font-size: 1.1rem;
+            color: #ccc;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .history-carousel-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            margin-bottom: 5rem;
+        }
+
+        .history-item {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 60%;
+            height: 100%;
+            max-width: 800px;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.7);
+            transition: transform 1.2s cubic-bezier(0.86, 0, 0.07, 1),
+                        opacity 1s cubic-bezier(0.86, 0, 0.07, 1);
+        }
+
+        .history-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .history-item.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            z-index: 10;
+        }
+
+        .history-item.is-next {
+            transform: translate(120%, -50%) scale(0.7);
+            z-index: 5;
+        }
+
+        .history-item.is-prev {
+            transform: translate(-120%, -50%) scale(0.7);
+            z-index: 5;
+        }
+
+        .history-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20;
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            padding: 1rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .history-nav-btn:hover {
+            color: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        #history-prev-btn { left: 5%; }
+        #history-next-btn { right: 5%; }
+
+        .history-nav-btn svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .history-timeline {
+            position: relative;
+            width: 80%;
+            margin: 0 auto;
+            height: 2px;
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        .timeline-items-container {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .timeline-item {
+            position: relative;
+            cursor: pointer;
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.5);
+            transition: all 0.4s ease;
+        }
+        
+        .timeline-item:hover::before, .timeline-item.active::before {
+            background-color: var(--color-primary-red);
+            transform: translateX(-50%) scale(1.5);
+        }
+
+        .timeline-item span {
+            display: block;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.5);
+            transition: color 0.4s ease;
+        }
+        
+        .timeline-item:hover span, .timeline-item.active span {
+            color: var(--color-text-light);
+        }
+        
+        /* --- Gallery Section Styles --- */
+        .gallery-section {
+            padding: 10rem 0;
+            background-color: var(--color-background-dark);
+            text-align: center;
+        }
+
+        .gallery-header {
+             max-width: 800px;
+            margin: 0 auto 5rem auto;
+        }
+
+        .gallery-container {
+            display: flex;
+            width: 100%;
+            height: 70vh;
+        }
+
+        .gallery-panel {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            background-size: cover;
+            background-position: center;
+            transition: flex 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .gallery-panel:hover {
+            flex: 2.5;
+        }
+        
+        .gallery-panel::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent 50%);
+            opacity: 0.8;
+            transition: opacity 0.5s ease;
+        }
+
+        .gallery-panel:hover::after {
+            opacity: 1;
+        }
+
+        .panel-content {
+            position: absolute;
+            bottom: 40px;
+            left: 40px;
+            color: var(--color-text-light);
+            z-index: 2;
+            text-align: left;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .gallery-panel:hover .panel-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .panel-content h3 {
+            font-family: var(--font-primary);
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
+        .panel-content .action-link {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 10px 20px;
+            background-color: var(--color-primary-red);
+            color: var(--color-text-light);
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .panel-content .action-link:hover {
+            background-color: #d32f2f;
+        }
+
+        /* Modal for Gallery/360 Views */
+        .gallery-modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0s 0.4s;
+        }
+        
+        .gallery-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.4s ease, visibility 0s;
+        }
+        
+        .gallery-modal-content {
+            position: relative;
+            width: 90%;
+            height: 90%;
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .gallery-modal-overlay.active .gallery-modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+        }
+
+        .modal-iframe-container, .modal-photo-grid {
+            width: 100%;
+            height: 100%;
+        }
+
+        .modal-iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .modal-photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            overflow-y: auto;
+        }
+        .modal-photo-grid img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* --- Contact Section Styles --- */
+        .contact-section {
+            padding: 10rem 5rem;
+            background-color: var(--color-background-light);
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 5rem;
+            align-items: center;
+        }
+        
+        .contact-details-list { list-style: none; margin-bottom: 2.5rem; }
+        .contact-detail-item { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem; }
+        .contact-detail-item .icon { color: var(--color-primary-red); flex-shrink: 0; margin-top: 5px; }
+        .contact-detail-item .icon svg { width: 24px; height: 24px; }
+        .contact-detail-item a { color: #555; text-decoration: none; transition: color 0.3s ease; }
+        .contact-detail-item a:hover { color: var(--color-primary-red); }
+
+        .opening-hours h4 { font-family: var(--font-primary); font-size: 1.5rem; margin-bottom: 1rem; color: var(--color-text-dark); }
+        .opening-hours p { color: #555; margin: 0; line-height: 1.7; }
+        
+        .map-container {
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            filter: grayscale(1);
+            transition: filter 0.3s ease;
+        }
+        .map-container:hover iframe {
+            filter: grayscale(0);
+        }
+
+        /* --- Footer Styles --- */
+        .site-footer {
+            background-color: var(--color-background-footer);
+            color: #aaa;
+            padding: 5rem 5rem 2rem 5rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-logo img {
+            height: 80px;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+        .footer-logo:hover img { opacity: 1; }
+
+        .footer-nav-list { display: flex; gap: 2rem; list-style: none; }
+        .footer-nav-list a { color: #aaa; text-decoration: none; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; transition: color 0.3s ease; }
+        .footer-nav-list a:hover { color: var(--color-text-light); }
+        
+        .footer-socials { display: flex; gap: 1.5rem; }
+        .footer-socials a { color: #aaa; text-decoration: none; transition: color 0.3s ease, transform 0.3s ease; }
+        .footer-socials a:hover { color: var(--color-text-light); transform: translateY(-3px); }
+        .footer-socials svg { width: 24px; height: 24px; }
+        
+        .copyright { font-size: 0.8rem; color: #666; }
+
+        /* --- Responsive Design Adjustments --- */
+        @media (max-width: 1200px) {
+            .content-panel {
+                width: 60%; padding: 2.5rem 4rem;
+                clip-path: polygon(0 0, 100% 0, 80% 100%, 0 100%);
+            }
+            .hero-content h1 { font-size: 4rem; }
+            .section-title { font-size: 3rem; }
+            #history-date { font-size: 3rem; }
+
+            .about-section, .services-section, .contact-section { padding: 8rem 4rem; }
+            .menu-cta-section { padding: 10rem 4rem; }
+            .history-section { padding: 8rem 0; }
+            .gallery-section { padding: 8rem 0; }
+        }
+
+        @media (max-width: 992px) {
+            .content-panel {
+                width: 100%; height: 100%;
+                clip-path: none;
+                background-color: rgba(253, 253, 253, 0.9);
+                justify-content: center; text-align: center; padding: 2rem;
+            }
+            .header-nav { display: none; }
+            .hero-content {
+                 display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .panel-footer, .header-nav { display: none; }
+            .slide-dots { right: 20px; }
+            
+            .about-section { flex-direction: column; padding: 6rem 2rem; }
+            .benefits-list { flex-direction: column; align-items: center; gap: 1.5rem; }
+            .services-section, .contact-section { padding: 6rem 2rem; }
+            .menu-cta-section { padding: 8rem 2rem; }
+            .menu-cta-background { background-attachment: scroll; }
+            .history-section { padding: 6rem 0; }
+            .history-carousel-container { height: 400px; }
+            .history-item { width: 80%; }
+            #history-prev-btn { left: 2%; }
+            #history-next-btn { right: 2%; }
+            .history-timeline { width: 90%; }
+            .gallery-section { padding: 6rem 0; }
+            .gallery-container { flex-direction: column; height: auto; }
+            .gallery-panel { height: 40vh; flex-basis: auto; }
+            .gallery-panel:hover { flex-grow: 1; }
+            .contact-section { grid-template-columns: 1fr; }
+            .map-container { height: 400px; }
+            .site-footer { padding: 4rem 2rem 1.5rem 2rem; }
+        }
+
+        @media (max-width: 576px) {
+            .hero-content h1 { font-size: 3rem; }
+            .section-title { font-size: 2.5rem; }
+             #history-date { font-size: 2.5rem; }
+            .cta-button a { padding: 14px 28px; }
+            
+            .about-section, .services-section, .menu-cta-section, .contact-section { padding: 5rem 1.5rem; }
+            .about-content .description { font-size: 1rem; }
+            .benefits-list { align-items: flex-start; }
+            
+            .history-section { padding: 5rem 0; }
+            .history-carousel-container { height: 300px; }
+            .history-item { width: 90%; }
+            .history-timeline span { font-size: 0.8rem; writing-mode: vertical-rl; text-orientation: mixed; margin-top: 15px; }
+            .gallery-section { padding: 5rem 0; }
+            .footer-nav-list { flex-wrap: wrap; justify-content: center; gap: 1rem 1.5rem; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <section class="hero-section">
+        <div class="hero-slideshow"></div>
+        <div class="content-panel">
+            <header class="header-nav">
+                <a href="#" class="nav-logo">
+                    <img src="https://i.postimg.cc/QxQdTpry/cafelogo.png" alt="Cafe Italia Logo">
+                </a>
+                <ul class="nav-list">
+                    <li class="nav-link"><a href="#about">About</a></li>
+                    <li class="nav-link"><a href="#services">Services</a></li>
+                    <li class="nav-link"><a href="#menu">Menu</a></li>
+                    <li class="nav-link"><a href="#history">History</a></li>
+                    <li class="nav-link"><a href="#gallery">Gallery</a></li>
+                    <li class="nav-link"><a href="#contact">Contact</a></li>
+                </ul>
+            </header>
+            <main class="hero-content">
+                <p class="subtitle">Cafe Italia Prague</p>
+                <h1 class="section-title">Where Tradition Meets Modern Taste</h1>
+            </main>
+            <footer class="panel-footer">Follow us on Social Media</footer>
+        </div>
+        <div class="slide-dots"></div>
+    </section>
+    
+    <section id="about" class="about-section">
+        <div class="about-image-container">
+            <img src="https://i.postimg.cc/PJF7zPQP/interier1.jpg" alt="Cozy interior of Cafe Italia">
+        </div>
+        <div class="about-content">
+            <p class="subtitle">A Passion for Italy</p>
+            <h2 class="section-title">Our Story</h2>
+            <p class="description">
+                Founded on a love for authentic Italian hospitality, Cafe Italia is more than just a place to dine—it's an experience. Nestled in the heart of Prague, we bring a slice of Italy to you, with recipes passed down through generations and an ambiance that feels like home. Our commitment is to quality, from the carefully selected coffee beans to the freshest ingredients in our kitchen.
+            </p>
+            <ul class="benefits-list">
+                <li class="benefit-item">
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11,2A9,9,0,0,0,2,11A9,9,0,0,0,11,20A9,9,0,0,0,20,11A9,9,0,0,0,11,2M11,18A7,7,0,0,1,4,11A7,7,0,0,1,11,4A7,7,0,0,1,18,11A7,7,0,0,1,11,18M12,11.5A2.5,2.5,0,0,0,14.5,9A2.5,2.5,0,0,0,12,6.5A2.5,2.5,0,0,0,9.5,9A2.5,2.5,0,0,0,12,11.5Z"></path></svg>
+                    </span>
+                    <span>Exquisite Cuisine</span>
+                </li>
+                 <li class="benefit-item">
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12,2C6.48,2,2,6.48,2,12C2,17.52,6.48,22,12,22C17.52,22,22,17.52,22,12C22,6.48,17.52,2,12,2M12,20C7.58,20,4,16.42,4,12C4,7.58,7.58,4,12,4C16.42,4,20,7.58,20,12C20,16.42,16.42,20,12,20M14,10.5C14,9.67,13.33,9,12.5,9C11.67,9,11,9.67,11,10.5C11,11.33,11.67,12,12.5,12C13.33,12,14,11.33,14,10.5M10,10.5C10,9.67,9.33,9,8.5,9C7.67,9,7,9.67,7,10.5C7,11.33,7.67,12,8.5,12C9.33,12,10,11.33,10,10.5M18,10.5C18,9.67,17.33,9,16.5,9C15.67,9,15,9.67,15,10.5C15,11.33,15.67,12,16.5,12C17.33,12,18,11.33,18,10.5M12,16.25C14.33,16.25,16.25,14.33,16.25,12H7.75C7.75,14.33,9.67,16.25,12,16.25Z"></path></svg>
+                    </span>
+                    <span>Dogs Welcome</span>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="services" class="services-section">
+        <div class="section-header">
+            <p class="subtitle">Naše Služby</p>
+            <h2 class="section-title">Všestranné Využití a Péče</h2>
+            <p class="intro-text">
+                Dovolujeme si Vám nabídnout restaurační prostory k všestrannému využití. Kulinářský zážitek si můžete nechat dopřát výběrem jídel z mezinárodní kuchyně a především širokým výběrem italských specialit.
+            </p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-card-image">
+                    <img src="https://i.postimg.cc/tRVfYtxQ/SVATBA.jpg" alt="Svatební hostina v Cafe Italia">
+                </div>
+                <div class="service-card-content">
+                    <h3>Svatby a Oslavy</h3>
+                    <p>Nabízíme kouzelné prostory z 13. století pro Vaši svatební hostinu či rodinnou oslavu. Zajistíme vše od menu po výzdobu a hudbu.</p>
+                    <a href="#" class="card-link">Více informací</a>
+                </div>
+            </div>
+            <div class="service-card">
+                <div class="service-card-image">
+                    <img src="https://i.postimg.cc/DZRMxmRM/CATERING.jpg" alt="Catering od Cafe Italia">
+                </div>
+                <div class="service-card-content">
+                    <h3>Firemní Akce a Catering</h3>
+                    <p>Zajišťujeme cateringové služby a firemní večírky. Postaráme se o veškerý inventář, personál, a sestavení menu dle Vašich přání.</p>
+                    <a href="#" class="card-link">Více informací</a>
+                </div>
+            </div>
+            <div class="service-card">
+                <div class="service-card-image">
+                    <img src="https://i.postimg.cc/nh9y2Y5Z/interier6.jpg" alt="Salonek pro tiskové konference">
+                </div>
+                <div class="service-card-content">
+                    <h3>Konference</h3>
+                    <p>Poskytujeme moderní technické vybavení pro tiskové konference, včetně salonku, coffe breaků a kompletního občerstvení.</p>
+                    <a href="#" class="card-link">Více informací</a>
+                </div>
+            </div>
+             <div class="service-card">
+                <div class="service-card-image">
+                    <img src="https://i.postimg.cc/yY4G9gmJ/CHLEB-SOUP.jpg" alt="Menu pro cestovní kanceláře">
+                </div>
+                <div class="service-card-content">
+                    <h3>Cestovní Kanceláře</h3>
+                    <p>Nabízíme speciální menu pro skupiny a cestovní kanceláře. Sestavíme nabídku přesně podle požadavků Vaší skupiny.</p>
+                    <a href="#" class="card-link">Více informací</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="menu" class="menu-cta-section">
+        <div class="menu-cta-background"></div>
+        <div class="menu-cta-overlay"></div>
+        <div class="menu-cta-content">
+            <p class="subtitle">A Culinary Journey</p>
+            <h2 class="section-title">Explore Our Menu</h2>
+            <p class="description">
+                From classic Italian breakfast to exquisite dinner specialties, every dish is a masterpiece waiting to be discovered.
+            </p>
+            <div class="cta-button">
+                <a href="https://caffeitaliapraha.choiceqr.com/menu/section:menu/snidane-9-00-11-00" target="_blank" rel="noopener noreferrer">View Full Menu</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="history" class="history-section">
+        <div class="section-header">
+            <p class="subtitle">A Legacy in Stone</p>
+            <h2 class="section-title">Our History</h2>
+        </div>
+        <div class="history-showcase">
+            <h2 id="history-date" class="section-title"></h2>
+            <p id="history-event"></p>
+        </div>
+        <div class="history-carousel-container">
+            <div class="history-carousel">
+                <!-- Carousel items will be injected by JS -->
+            </div>
+            <button id="history-prev-btn" class="history-nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
+            </button>
+            <button id="history-next-btn" class="history-nav-btn">
+                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>
+            </button>
+        </div>
+        <div class="history-timeline">
+            <div class="timeline-items-container">
+                 <!-- Timeline items will be injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" class="gallery-section">
+        <div class="gallery-header section-header">
+             <p class="subtitle">A Glimpse Inside</p>
+             <h2 class="section-title">Experience Our Ambiance</h2>
+        </div>
+        <div class="gallery-container">
+            <div class="gallery-panel" style="background-image: url('https://i.postimg.cc/PJF7zPQP/interier1.jpg');" data-type="interior-360">
+                <div class="panel-content">
+                    <h3>Virtual Tour</h3>
+                    <a href="#" class="action-link">Explore Interior</a>
+                </div>
+            </div>
+            <div class="gallery-panel" style="background-image: url('https://i.postimg.cc/yY4G9gmJ/CHLEB-SOUP.jpg');" data-type="photo-gallery">
+                 <div class="panel-content">
+                    <h3>Photo Gallery</h3>
+                    <a href="#" class="action-link">View Photos</a>
+                </div>
+            </div>
+            <div class="gallery-panel" style="background-image: url('https://i.postimg.cc/W3Y8xxFy/exterier1.jpg');" data-type="exterior-360">
+                 <div class="panel-content">
+                    <h3>Týn Courtyard</h3>
+                    <a href="#" class="action-link">Explore Exterior</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="gallery-modal-overlay">
+        <div class="gallery-modal-content">
+            <button class="modal-close-btn">&times;</button>
+            <div class="modal-iframe-container" id="modal-iframe-container"></div>
+            <div class="modal-photo-grid" id="modal-photo-grid"></div>
+        </div>
+    </div>
+
+    <section id="contact" class="contact-section">
+        <div class="contact-info-content">
+            <p class="subtitle">Visit Us</p>
+            <h2 class="section-title">Get In Touch</h2>
+            <p class="description">
+                We are located in the heart of historic Prague, in the picturesque Týn Courtyard. We look forward to your visit and are here to answer any questions you may have.
+            </p>
+            <ul class="contact-details-list">
+                <li class="contact-detail-item">
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
+                    </span>
+                    <div>
+                        <strong>Address:</strong><br>
+                        Týn 2/640, 110 00 Staré Město, Prague, Czechia
+                    </div>
+                </li>
+                 <li class="contact-detail-item">
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>
+                    </span>
+                    <div>
+                        <strong>Reservations:</strong><br>
+                        <a href="tel:+420224895404">+420 224 895 404</a>
+                    </div>
+                </li>
+                 <li class="contact-detail-item">
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
+                    </span>
+                    <div>
+                        <strong>Email:</strong><br>
+                        <a href="mailto:info@caffeitalia.cz">info@caffeitalia.cz</a>
+                    </div>
+                </li>
+            </ul>
+             <div class="opening-hours">
+                <h4>Opening Hours</h4>
+                <p>Monday - Sunday: 9:00 AM - 11:00 PM</p>
+            </div>
+        </div>
+        <div class="map-container">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2560.023531998522!2d14.4222044!3d50.0877991!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470b94942838703d%3A0x656a87c1dce3e03!2sCaff%C3%A9%20Italia!5e0!3m2!1sen!2scz!4v1718744093954!5m2!1sen!2scz" width="600" height="450" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <a href="#" class="footer-logo">
+                 <img src="https://i.postimg.cc/QxQdTpry/cafelogo.png" alt="Cafe Italia Logo">
+            </a>
+            <ul class="footer-nav-list">
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#history">History</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+             <div class="footer-socials">
+                <a href="#" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M14 13.5H16.5L17.5 9.5H14V7.5C14 6.47 14 5.5 16 5.5H17.5V2.14C17.174 2.097 15.943 2 14.643 2C11.928 2 10 3.657 10 6.7V9.5H7V13.5H10V22H14V13.5Z" /></svg></a>
+                <a href="#" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z" /></svg></a>
+                <a href="#" aria-label="TripAdvisor"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M8.5,10.5A1.5,1.5 0 0,0 7,12A1.5,1.5 0 0,0 8.5,13.5A1.5,1.5 0 0,0 10,12A1.5,1.5 0 0,0 8.5,10.5M15.5,10.5A1.5,1.5 0 0,0 14,12A1.5,1.5 0 0,0 15.5,13.5A1.5,1.5 0 0,0 17,12A1.5,1.5 0 0,0 15.5,10.5M12,15A4,4 0 0,0 8,19H16A4,4 0 0,0 12,15Z" /></svg></a>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2025 Cafe Italia Prague. All Rights Reserved. Website designed with passion.
+        </div>
+    </footer>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- Intersection Observer for fade-up animations ---
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.about-image-container, .about-content, .section-header, .service-card, .menu-cta-content, .contact-info-content, .map-container').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(50px)';
+                el.style.transition = 'opacity 1.2s cubic-bezier(0.165, 0.84, 0.44, 1), transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1)';
+                observer.observe(el);
+            });
+            
+            // --- Hero Slider Logic ---
+            const heroSlideshowContainer = document.querySelector('.hero-slideshow');
+            if (heroSlideshowContainer) {
+                const images = [
+                    'https://i.postimg.cc/W3Y8xxFy/exterier1.jpg',
+                    'https://i.postimg.cc/PqmBsfTR/interier4.jpg',
+                    'https://i.postimg.cc/65qJ2Nf8/drinks3.jpg',
+                    'https://i.postimg.cc/j2GXSNhQ/exterier2.jpg'
+                ];
+                const slideInterval = 8000;
+                const dotsContainer = document.querySelector('.slide-dots');
+                let currentSlide = 0;
+                let slideTimer;
+
+                function initHeroSlider() {
+                    images.forEach((imgSrc, index) => {
+                        const img = new Image();
+                        img.src = imgSrc;
+
+                        const slide = document.createElement('div');
+                        slide.classList.add('slide');
+                        slide.style.backgroundImage = `url(${imgSrc})`;
+                        heroSlideshowContainer.appendChild(slide);
+
+                        if (dotsContainer){
+                            const dot = document.createElement('span');
+                            dot.classList.add('dot');
+                            dot.dataset.slide = index;
+                            dotsContainer.appendChild(dot);
+                        }
+                    });
+                    
+                    if (dotsContainer) {
+                       dotsContainer.addEventListener('click', handleDotClick);
+                    }
+                    showSlide(0);
+                    startTimer();
+                }
+
+                function showSlide(slideIndex) {
+                    const slides = heroSlideshowContainer.children;
+                    if (!slides.length) return;
+                    
+                    currentSlide = (slideIndex + slides.length) % slides.length;
+
+                    for (let slide of slides) {
+                        slide.classList.remove('active', 'pan-left', 'pan-right');
+                    }
+                    
+                    const activeSlide = slides[currentSlide];
+                    activeSlide.classList.add('active');
+                    activeSlide.classList.add(currentSlide % 2 === 0 ? 'pan-right' : 'pan-left');
+
+                    if (dotsContainer) {
+                        const dots = dotsContainer.children;
+                        for (let dot of dots) {
+                            dot.classList.remove('active');
+                        }
+                        if (dots[currentSlide]) {
+                            dots[currentSlide].classList.add('active');
+                        }
+                    }
+                }
+                
+                function nextSlide() { showSlide(currentSlide + 1); }
+                function startTimer() { clearInterval(slideTimer); slideTimer = setInterval(nextSlide, slideInterval); }
+                function handleDotClick(e) {
+                    if (e.target.matches('.dot')) {
+                        const slideIndex = parseInt(e.target.dataset.slide, 10);
+                        if (slideIndex !== currentSlide) {
+                             showSlide(slideIndex);
+                             startTimer(); 
+                        }
+                    }
+                }
+                
+                initHeroSlider();
+            }
+
+            // --- History Slider Logic ---
+            const historySection = document.getElementById('history');
+            if (historySection) {
+                 const historyData = [
+                    { year: '1511', event: 'Týn Church towers completed by Matěj Rejsek, shaping the skyline seen from our windows.', image: 'https://images.unsplash.com/photo-1597812095813-e963c9597143?q=80&w=1974&auto=format&fit=crop' },
+                    { year: '1601', event: 'The final resting place of famed astronomer Tycho Brahe is installed within the Týn Church.', image: 'https://images.unsplash.com/photo-1620753946229-23c34731424a?q=80&w=1964&auto=format&fit=crop' },
+                    { year: '1679', event: 'The Gothic vault of Týn Church is replaced by a grander Baroque vault after a fire.', image: 'https://images.unsplash.com/photo-1562016609-b452a3536834?q=80&w=1974&auto=format&fit=crop' },
+                    { year: '1862', event: 'Czech language instruction is added to the Týn school, a pivotal moment in national heritage.', image: 'https://images.unsplash.com/photo-1593132475859-c2a013449339?q=80&w=1974&auto=format&fit=crop' },
+                    { year: '1994', event: 'Following extensive renovation, the historic space is reborn as Caffé Italia, a new chapter begins.', image: 'https://i.postimg.cc/PJF7zPQP/interier1.jpg' },
+                    { year: '2005', event: 'Archaeological exploration uncovers the secrets of the building\'s medieval vaults.', image: 'https://i.postimg.cc/nh9y2Y5Z/interier6.jpg' },
+                    { year: '2009', event: 'After an EU-funded restoration, the ancient cellars are opened to the public for the first time.', image: 'https://i.postimg.cc/DZRMxmRM/CATERING.jpg' }
+                ];
+
+                const nextButton = document.getElementById('history-next-btn');
+                const prevButton = document.getElementById('history-prev-btn');
+                const carousel = document.querySelector('.history-carousel');
+                const timeline = document.querySelector('.timeline-items-container');
+                const dateHeadline = document.getElementById('history-date');
+                const eventHeadline = document.getElementById('history-event');
+                
+                let currentIndex = 0;
+                let isAnimating = false;
+
+                historyData.forEach((item, index) => {
+                    const carItem = document.createElement('div');
+                    carItem.classList.add('history-item');
+                    carItem.innerHTML = `<img src="${item.image}" alt="${item.event}">`;
+                    carousel.appendChild(carItem);
+
+                    const timeItem = document.createElement('div');
+                    timeItem.classList.add('timeline-item');
+                    timeItem.dataset.index = index;
+                    timeItem.innerHTML = `<span>${item.year}</span>`;
+                    timeline.appendChild(timeItem);
+                });
+
+                const historyItems = document.querySelectorAll('.history-item');
+                const timelineItems = document.querySelectorAll('.timeline-item');
+                const totalItems = historyItems.length;
+
+                function setClasses() {
+                    historyItems.forEach((item, index) => {
+                        item.classList.remove('active', 'is-prev', 'is-next');
+                        if (index === currentIndex) {
+                            item.classList.add('active');
+                        } else if (index === (currentIndex + 1) % totalItems) {
+                            item.classList.add('is-next');
+                        } else if (index === (currentIndex - 1 + totalItems) % totalItems) {
+                            item.classList.add('is-prev');
+                        }
+                    });
+
+                    timelineItems.forEach((item, index) => {
+                        item.classList.remove('active');
+                        if(index === currentIndex) {
+                            item.classList.add('active');
+                        }
+                    });
+                }
+
+                function updateShowcaseText(index) {
+                    dateHeadline.textContent = historyData[index].year;
+                    eventHeadline.textContent = historyData[index].event;
+                }
+                
+                function moveTo(index) {
+                     if (isAnimating) return;
+                    isAnimating = true;
+
+                    currentIndex = index;
+                    setClasses();
+                    updateShowcaseText(currentIndex);
+
+                    setTimeout(() => {
+                        isAnimating = false;
+                    }, 1200);
+                }
+
+                nextButton.addEventListener('click', () => moveTo((currentIndex + 1) % totalItems));
+                prevButton.addEventListener('click', () => moveTo((currentIndex - 1 + totalItems) % totalItems));
+                
+                timelineItems.forEach(item => {
+                    item.addEventListener('click', () => {
+                        const index = parseInt(item.dataset.index, 10);
+                        moveTo(index);
+                    })
+                });
+
+                setClasses();
+                updateShowcaseText(currentIndex);
+            }
+
+            // --- Gallery Logic ---
+            const gallerySection = document.getElementById('gallery');
+            if(gallerySection) {
+                const galleryPanels = document.querySelectorAll('.gallery-panel');
+                const modalOverlay = document.querySelector('.gallery-modal-overlay');
+                const modalCloseBtn = document.querySelector('.modal-close-btn');
+                const iframeContainer = document.getElementById('modal-iframe-container');
+                const photoGridContainer = document.getElementById('modal-photo-grid');
+
+                const contentData = {
+                    'interior-360': {
+                        type: 'iframe',
+                        payload: '<iframe src="https://www.google.com/maps/embed?pb=!4v1718742426875!6m8!1m7!1sCAoSLEFGMVFpcE5yVDRWc3lRMXRsdG42SE1wRnA2X1h2b0NIZU5WazctaExsMVZn!2m2!1d50.087799074853!2d14.422204481084!3f233.58288544490226!4f-12.721243542284918!5f0.7820865974627469" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'
+                    },
+                    'exterior-360': {
+                         type: 'iframe',
+                        payload: '<iframe src="https://www.google.com/maps/embed?pb=!4v1718742512134!6m8!1m7!1sCAoSLEFGMVFpcE5ZVWgzc0txZmpyM25tV1VzcUJaUkZLR1p6WFFZWGZpZGVSd01j!2m2!1d50.0878152!2d14.4221161!3f324.78!4f-2.970000000000006!5f0.7820865974627469" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'
+                    },
+                    'photo-gallery': {
+                        type: 'photos',
+                        payload: [
+                            'https://i.postimg.cc/tRVfYtxQ/SVATBA.jpg',
+                            'https://i.postimg.cc/DZRMxmRM/CATERING.jpg',
+                            'https://i.postimg.cc/yY4G9gmJ/CHLEB-SOUP.jpg',
+                            'https://i.postimg.cc/nh9y2Y5Z/interier6.jpg',
+                            'https://i.postimg.cc/PJF7zPQP/interier1.jpg',
+                            'https://i.postimg.cc/65qJ2Nf8/drinks3.jpg'
+                        ]
+                    }
+                };
+                
+                function openModal(type) {
+                    const data = contentData[type];
+                    if (!data) return;
+
+                    iframeContainer.innerHTML = '';
+                    photoGridContainer.innerHTML = '';
+                    iframeContainer.style.display = 'none';
+                    photoGridContainer.style.display = 'none';
+
+                    if (data.type === 'iframe') {
+                        iframeContainer.innerHTML = data.payload;
+                        iframeContainer.style.display = 'block';
+                    } else if (data.type === 'photos') {
+                        let photoHTML = '';
+                        data.payload.forEach(url => {
+                            photoHTML += `<img src="${url}" alt="Cafe Italia Gallery Image">`;
+                        });
+                        photoGridContainer.innerHTML = photoHTML;
+                        photoGridContainer.style.display = 'grid';
+                    }
+
+                    modalOverlay.classList.add('active');
+                }
+
+                function closeModal() {
+                    modalOverlay.classList.remove('active');
+                }
+
+                galleryPanels.forEach(panel => {
+                    panel.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const type = panel.dataset.type;
+                        openModal(type);
+                    });
+                });
+
+                modalCloseBtn.addEventListener('click', closeModal);
+                modalOverlay.addEventListener('click', (e) => {
+                    if (e.target === modalOverlay) {
+                        closeModal();
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
