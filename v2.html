@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafe Italia, Praha - Symfonie Chuti a Stylu</title>
+    
+    <!--
+      - FONT-FAMILY:
+      - 'Plus Jakarta Sans' is chosen for its clean, modern, and geometric letterforms, providing excellent readability for UI elements and body text.
+      - 'Playfair Display' is a serif font with high contrast and delicate hairlines, perfect for elegant, impactful headlines that evoke a sense of luxury and tradition.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Feather Icons for minimalist, clean iconography -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <style>
+        /*
+        ==============================================
+        * ROOT & VARIABLE DEFINITIONS
+        ==============================================
+        * Defines the core design system for the site.
+        * Uses a modern, luxurious palette with a soft off-white background,
+        * a deep, rich charcoal for contrast, and the signature red.
+        */
+        :root {
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            
+            --color-primary-red: #B71C1C;
+            --color-background: #F9F9F7;
+            --color-background-dark: #1a1a1a; /* New dark color */
+            --color-text-dark: #101010;
+            --color-text-light: #EAEAEA;
+            --color-text-muted: #666;
+            --color-border: rgba(0, 0, 0, 0.08);
+
+            --border-radius-soft: 12px;
+            --border-radius-pill: 50px;
+
+            --transition-fast: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-smooth: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        /*
+        ==============================================
+        * CSS RESET & BASE STYLES
+        ==============================================
+        * Ensures a consistent baseline across browsers.
+        * Sets up smooth scrolling and base typography.
+        */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--color-background);
+            color: var(--color-text-dark);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /*
+        ==============================================
+        * PRELOADER STYLES
+        ==============================================
+        */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-background);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .preloader .logo-mark {
+            font-family: var(--font-heading);
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--color-primary-red);
+        }
+
+        /*
+        ==============================================
+        * REUSABLE COMPONENTS & UTILITIES
+        ==============================================
+        */
+        .container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section {
+            padding: 8rem 0;
+            overflow: hidden;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-subheader {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--color-primary-red);
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            font-weight: 600;
+            line-height: 1.2;
+            color: var(--color-text-dark);
+        }
+        
+        .section-title.light { color: var(--color-text-light); }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--color-primary-red);
+            color: #fff;
+            padding: 1rem 2.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid var(--color-primary-red);
+            border-radius: var(--border-radius-pill);
+            transition: all var(--transition-fast);
+        }
+
+        .cta-button:hover {
+            background-color: transparent;
+            color: var(--color-primary-red);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(183, 28, 28, 0.2);
+        }
+        
+        /* Animation class for elements to fade in on scroll */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s var(--transition-smooth), transform 0.8s var(--transition-smooth);
+        }
+
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /*
+        ==============================================
+        * HEADER & NAVIGATION
+        ==============================================
+        */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.5rem 0;
+            transition: background-color var(--transition-fast), padding var(--transition-fast), box-shadow var(--transition-fast);
+        }
+
+        .main-header.scrolled {
+            background-color: var(--color-background);
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1600px;
+            padding: 0 3rem;
+            margin: 0 auto;
+        }
+
+        .nav-logo img {
+            height: 60px;
+            transition: transform var(--transition-fast);
+        }
+        .nav-logo img:hover { transform: scale(1.05); }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+        }
+
+        .nav-menu a {
+            color: var(--color-text-dark);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--color-primary-red);
+            transition: width var(--transition-fast);
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-actions .cta-button {
+            padding: 0.75rem 1.75rem;
+            font-size: 0.8rem;
+        }
+
+        /*
+        ==============================================
+        * HERO SECTION
+        ==============================================
+        */
+        .hero-section {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+        
+        .hero-slideshow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hero-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transform: scale(1.15);
+            transition: opacity 2s ease-in-out;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+            animation: kenBurns 15s linear forwards;
+        }
+
+        @keyframes kenBurns {
+            0% { transform: scale(1.15) translate(0, 0); }
+            100% { transform: scale(1) translate(-2%, 1%); }
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.3));
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            max-width: 800px;
+            animation: heroFadeIn 1.5s 0.5s forwards cubic-bezier(0.165, 0.84, 0.44, 1);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        @keyframes heroFadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-content h1 {
+            font-family: var(--font-heading);
+            font-size: 5.5rem;
+            font-weight: 500;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            font-weight: 300;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /*
+        ==============================================
+        * ABOUT US SECTION
+        ==============================================
+        */
+        .about-section {
+            background-color: var(--color-background);
+        }
+        
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .about-image-wrapper {
+            position: relative;
+        }
+
+        .about-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: var(--border-radius-soft);
+        }
+
+        .about-image-wrapper::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: -20px;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--color-primary-red);
+            border-radius: var(--border-radius-soft);
+            z-index: -1;
+            transition: var(--transition-smooth);
+        }
+        
+        .about-image-wrapper:hover::after {
+            transform: translate(10px, 10px);
+        }
+
+        .about-content .description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--color-text-muted);
+            margin-bottom: 2.5rem;
+        }
+
+        .about-benefits {
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .about-benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .about-benefit-item i {
+            color: var(--color-primary-red);
+            width: 24px;
+            height: 24px;
+        }
+
+        .about-benefit-item span {
+            font-weight: 600;
+        }
+        
+        /*
+        ==============================================
+        * SERVICES SECTION (REDESIGNED V4)
+        ==============================================
+        */
+        .services-section {
+            background-color: var(--color-background-dark);
+        }
+        
+        .services-section .section-header p {
+            color: var(--color-text-light);
+            max-width: 600px;
+            margin: 1rem auto 0;
+            opacity: 0.8;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .service-card {
+            background-color: #222;
+            border-radius: var(--border-radius-soft);
+            overflow: hidden;
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+            border: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .service-card-image {
+            height: 240px;
+            overflow: hidden;
+        }
+
+        .service-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-smooth);
+        }
+        
+        .service-card:hover .service-card-image img {
+            transform: scale(1.05);
+        }
+
+        .service-card-content {
+            padding: 2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .service-card-content h3 {
+            font-family: var(--font-heading);
+            font-size: 1.75rem;
+            color: var(--color-text-light);
+            margin-bottom: 1rem;
+        }
+
+        .service-card-content p {
+            color: #aaa;
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .service-card-content .card-link {
+            color: var(--color-primary-red);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            align-self: flex-start;
+        }
+        
+        .service-card-content .card-link i {
+            transition: transform var(--transition-fast);
+        }
+        
+        .service-card-content .card-link:hover i {
+            transform: translateX(5px);
+        }
+
+        /*
+        ==============================================
+        * MENU CTA SECTION
+        ==============================================
+        */
+        .menu-cta-section {
+            position: relative;
+            padding: 10rem 0;
+            text-align: center;
+            background-image: url('https://i.postimg.cc/DZRwq6Zt/Slider-Cake1.jpg');
+            background-attachment: fixed;
+            background-position: center;
+            background-size: cover;
+            color: white;
+        }
+        
+        .menu-cta-section .section-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(18, 18, 18, 0.8);
+            z-index: 1;
+        }
+        
+        .menu-cta-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .menu-cta-content .section-title {
+            color: var(--color-text-light);
+        }
+
+        .menu-cta-content .description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #ccc;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /*
+        ==============================================
+        * HISTORY SECTION
+        ==============================================
+        */
+        .history-section {
+            background-color: var(--color-background-dark);
+        }
+        
+        .history-layout {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .history-timeline {
+            list-style: none;
+        }
+        
+        .timeline-year {
+            padding: 1.5rem 0;
+            cursor: pointer;
+            position: relative;
+            opacity: 0.5;
+            transition: opacity var(--transition-fast);
+        }
+        
+        .timeline-year.active {
+            opacity: 1;
+        }
+        
+        .timeline-year:hover {
+            opacity: 0.8;
+        }
+
+        .timeline-year::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #555;
+            transition: background-color var(--transition-fast), transform var(--transition-fast);
+        }
+        
+        .timeline-year.active::before {
+            background-color: var(--color-primary-red);
+            transform: translateY(-50%) scale(1.5);
+        }
+        
+        .timeline-year h3 {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            color: var(--color-text-light);
+        }
+        
+        .history-content-wrapper {
+            position: relative;
+            height: 500px;
+        }
+        
+        .history-content-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0s 0.5s;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            border-radius: var(--border-radius-soft);
+            overflow: hidden;
+            padding: 3rem;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .history-content-item.active {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.5s ease;
+        }
+        
+        .history-content-item::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent 60%);
+        }
+        
+        .history-content-item .content {
+            position: relative;
+            z-index: 2;
+            color: var(--color-text-light);
+            transform: translateY(20px);
+            transition: transform 0.5s ease;
+        }
+
+        .history-content-item.active .content {
+            transform: translateY(0);
+        }
+        
+        .history-content-item h4 {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .history-content-item p {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #ccc;
+            max-width: 90%;
+        }
+
+        /*
+        ==============================================
+        * GALLERY SECTION
+        ==============================================
+        */
+        .gallery-section {
+            padding: 10rem 0;
+            background-color: var(--color-background-dark);
+            text-align: center;
+        }
+        .gallery-header {
+             max-width: 800px;
+            margin: 0 auto 5rem auto;
+        }
+        .gallery-container {
+            display: flex;
+            width: 100%;
+            height: 70vh;
+        }
+        .gallery-panel {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            background-size: cover;
+            background-position: center;
+            transition: flex 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border-radius: var(--border-radius-soft);
+            margin: 0 0.5rem;
+        }
+        .gallery-panel:hover {
+            flex: 2.5;
+        }
+        .gallery-panel::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent 50%);
+            opacity: 0.8;
+            transition: opacity 0.5s ease;
+        }
+        .gallery-panel:hover::after {
+            opacity: 1;
+        }
+        .panel-content {
+            position: absolute;
+            bottom: 40px;
+            left: 40px;
+            color: var(--color-text-light);
+            z-index: 2;
+            text-align: left;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .gallery-panel:hover .panel-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .panel-content h3 {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            margin: 0;
+        }
+        .panel-content .action-link {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 10px 20px;
+            background-color: var(--color-primary-red);
+            color: var(--color-text-light);
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: var(--border-radius-pill);
+            transition: background-color 0.3s ease;
+        }
+        .panel-content .action-link:hover {
+            background-color: #d32f2f;
+        }
+        /* Modal for Gallery/360 Views */
+        .gallery-modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0s 0.4s;
+        }
+        .gallery-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.4s ease, visibility 0s;
+        }
+        .gallery-modal-content {
+            position: relative;
+            width: 90%;
+            height: 90%;
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .gallery-modal-overlay.active .gallery-modal-content {
+            transform: scale(1);
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+        }
+        .modal-iframe-container, .modal-photo-grid {
+            width: 100%;
+            height: 100%;
+        }
+        .modal-iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: var(--border-radius-soft);
+        }
+        .modal-photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            overflow-y: auto;
+        }
+        .modal-photo-grid img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: var(--border-radius-soft);
+        }
+
+        /*
+        ==============================================
+        * AMBIANCE SECTION (REMOVED - Integrated into Gallery)
+        ==============================================
+        */
+        
+        /*
+        ==============================================
+        * CONTACT SECTION (REDESIGNED)
+        ==============================================
+        */
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 5rem;
+            align-items: flex-start;
+        }
+        
+        .contact-info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .contact-info-item i {
+            color: var(--color-primary-red);
+            width: 28px;
+            height: 28px;
+            margin-top: 5px;
+        }
+        
+        .contact-info-item h4 {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .contact-info-item p {
+            color: var(--color-text-muted);
+            line-height: 1.6;
+        }
+        
+        .map-container {
+            width: 100%;
+            height: 500px;
+            border-radius: var(--border-radius-soft);
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+
+        /*
+        ==============================================
+        * FOOTER
+        ==============================================
+        */
+        .main-footer {
+            background-color: var(--color-background-dark);
+            color: var(--color-text-light);
+            padding: 6rem 0 2rem 0;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 4rem;
+        }
+        
+        .footer-about .footer-logo {
+            height: 70px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-about p {
+            color: #aaa;
+            line-height: 1.7;
+            max-width: 350px;
+        }
+        
+        .footer-widget h4 {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color var(--transition-fast), padding-left var(--transition-fast);
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .footer-socials {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .footer-socials a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: color var(--transition-fast), transform var(--transition-fast);
+        }
+        
+        .footer-socials a:hover {
+            color: var(--color-primary-red);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        /*
+        ==============================================
+        * RESPONSIVE DESIGN
+        ==============================================
+        */
+        @media (max-width: 1024px) {
+            .section-title { font-size: 3rem; }
+            .hero-content h1 { font-size: 4rem; }
+            .nav-menu { gap: 2rem; }
+            .about-grid, .contact-layout { grid-template-columns: 1fr; }
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+            .history-layout { grid-template-columns: 1fr; }
+            .history-timeline { display: flex; overflow-x: auto; padding-bottom: 1rem; }
+            .timeline-year { flex: 0 0 120px; text-align: center; }
+            .timeline-year::before { left: 50%; transform: translate(-50%, 50px); }
+            .timeline-year.active::before { transform: translate(-50%, 50px) scale(1.5); }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .gallery-container { flex-direction: column; height: auto; }
+            .gallery-panel { height: 40vh; flex-basis: auto; margin: 0.5rem 0; }
+            .gallery-panel:hover { flex-grow: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .section { padding: 6rem 0; }
+            .nav-container { padding: 0 1.5rem; }
+            .nav-menu { display: none; /* Replace with mobile menu logic */ }
+            .hero-content h1 { font-size: 3rem; }
+            .hero-content p { font-size: 1.1rem; }
+            .section-title { font-size: 2.5rem; }
+            .services-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+            .footer-about p { margin: 0 auto; }
+            .footer-socials { justify-content: center; }
+            .contact-layout { gap: 3rem; }
+            .map-container { height: 400px; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="logo-mark">CI</div>
+    </div>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <img src="https://i.postimg.cc/k4DP2vLw/cafe-italia-logo.png" alt="Cafe Italia Logo">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#about">O nás</a></li>
+                <li><a href="#services">Služby</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#history">Náš příběh</a></li>
+                <li><a href="#gallery">Galerie</a></li>
+                <li><a href="#contact">Kontakt</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="#contact" class="cta-button">Rezervovat stůl</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-slideshow">
+                <div class="hero-slide active" style="background-image: url('https://i.postimg.cc/tJ053xJt/hero-1.jpg');"></div>
+                <div class="hero-slide" style="background-image: url('https://i.postimg.cc/HxbxWJ1c/hero-2.jpg');"></div>
+                <div class="hero-slide" style="background-image: url('https://i.postimg.cc/4xW8mNBQ/hero-3.jpg');"></div>
+            </div>
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h1>Chuť Itálie v srdci Prahy</h1>
+                <p>Zažijte autentickou italskou kuchyni, kde se tradiční recepty snoubí s moderní elegancí. Kulinářská cesta, která potěší smysly.</p>
+                <a href="#menu" class="cta-button">Prozkoumat menu</a>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="section about-section">
+            <div class="container">
+                <div class="about-grid">
+                    <div class="about-image-wrapper fade-in-up">
+                        <img src="https://i.postimg.cc/L85YjVd5/about-us.jpg" alt="Interiér Cafe Italia" class="about-image">
+                    </div>
+                    <div class="about-content fade-in-up" style="transition-delay: 0.2s;">
+                        <h4 class="section-subheader">Naše filozofie</h4>
+                        <h2 class="section-title">Esence italské pohostinnosti</h2>
+                        <p class="description">
+                            V Cafe Italia věříme, že stolování je víc než jen jídlo; je to oslava života, rodiny a přátelství. Naše filozofie je zakořeněna v italské tradici používání čerstvých, sezónních surovin k vytváření pokrmů, které jsou jednoduché a zároveň vznešené. Každý talíř vypráví příběh naší vášně pro autentické chutě a našeho závazku k dokonalosti.
+                        </p>
+                        <ul class="about-benefits">
+                            <li class="about-benefit-item">
+                                <i data-feather="coffee"></i>
+                                <span>Autentické recepty</span>
+                            </li>
+                            <li class="about-benefit-item">
+                                <i data-feather="sun"></i>
+                                <span>Čerstvé suroviny</span>
+                            </li>
+                            <li class="about-benefit-item">
+                                <i data-feather="heart"></i>
+                                <span>Příjemná atmosféra</span>
+                            </li>
+                            <li class="about-benefit-item">
+                                <i data-feather="star"></i>
+                                <span>Výjimečný servis</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="section services-section">
+            <div class="container">
+                <div class="section-header">
+                    <h4 class="section-subheader">Naše Služby</h4>
+                    <h2 class="section-title light">Všestrannost a péče</h2>
+                    <p>
+                        Dovolujeme si Vám nabídnout restaurační prostory k všestrannému využití. Kulinářský zážitek si můžete nechat dopřát výběrem jídel z mezinárodní kuchyně a především širokým výběrem italských specialit.
+                    </p>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card fade-in-up">
+                        <div class="service-card-image">
+                            <img src="https://i.postimg.cc/tRVfYtxQ/SVATBA.jpg" alt="Svatební hostina v Cafe Italia">
+                        </div>
+                        <div class="service-card-content">
+                            <h3>Svatby a Oslavy</h3>
+                            <p>Nabízíme kouzelné prostory z 13. století pro Vaši svatební hostinu či rodinnou oslavu. Zajistíme vše od menu po výzdobu a hudbu.</p>
+                            <a href="#" class="card-link">Více informací <i data-feather="arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="service-card fade-in-up" style="transition-delay: 0.1s;">
+                        <div class="service-card-image">
+                            <img src="https://i.postimg.cc/DZRMxmRM/CATERING.jpg" alt="Catering od Cafe Italia">
+                        </div>
+                        <div class="service-card-content">
+                            <h3>Firemní Akce a Catering</h3>
+                            <p>Zajišťujeme cateringové služby a firemní večírky. Postaráme se o veškerý inventář, personál, a sestavení menu dle Vašich přání.</p>
+                            <a href="#" class="card-link">Více informací <i data-feather="arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="service-card fade-in-up" style="transition-delay: 0.2s;">
+                        <div class="service-card-image">
+                            <img src="https://i.postimg.cc/nh9y2Y5Z/interier6.jpg" alt="Salonek pro tiskové konference">
+                        </div>
+                        <div class="service-card-content">
+                            <h3>Konference</h3>
+                            <p>Poskytujeme moderní technické vybavení pro tiskové konference, včetně salonku, coffe breaků a kompletního občerstvení.</p>
+                            <a href="#" class="card-link">Více informací <i data-feather="arrow-right"></i></a>
+                        </div>
+                    </div>
+                     <div class="service-card fade-in-up" style="transition-delay: 0.3s;">
+                        <div class="service-card-image">
+                            <img src="https://i.postimg.cc/yY4G9gmJ/CHLEB-SOUP.jpg" alt="Menu pro cestovní kanceláře">
+                        </div>
+                        <div class="service-card-content">
+                            <h3>Cestovní Kanceláře</h3>
+                            <p>Nabízíme speciální menu pro skupiny a cestovní kanceláře. Sestavíme nabídku přesně podle požadavků Vaší skupiny.</p>
+                            <a href="#" class="card-link">Více informací <i data-feather="arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Menu CTA Section -->
+        <section id="menu" class="section menu-cta-section">
+            <div class="section-overlay"></div>
+            <div class="container menu-cta-content">
+                <h4 class="section-subheader">Naše kulinářské umění</h4>
+                <h2 class="section-title">Objevte naše menu</h2>
+                <p class="description">
+                    Naše menu je poctou bohatému kulinářskému dědictví Itálie. Od ručně vyráběných těstovin po pizzu z pece na dřevo a dekadentní dezerty, každý pokrm je připraven s vášní a z těch nejlepších surovin.
+                </p>
+                <a href="#" class="cta-button">Zobrazit celé menu</a>
+            </div>
+        </section>
+
+        <!-- History Section -->
+        <section id="history" class="section history-section">
+            <div class="container">
+                <div class="section-header">
+                    <h4 class="section-subheader">Naše cesta</h4>
+                    <h2 class="section-title light">Příběh vášně</h2>
+                </div>
+                <div class="history-layout">
+                    <ul class="history-timeline">
+                        <li class="timeline-year active" data-target="1998"><h3>1998</h3></li>
+                        <li class="timeline-year" data-target="2005"><h3>2005</h3></li>
+                        <li class="timeline-year" data-target="2015"><h3>2015</h3></li>
+                        <li class="timeline-year" data-target="2024"><h3>2024</h3></li>
+                    </ul>
+                    <div class="history-content-wrapper">
+                        <div id="history-1998" class="history-content-item active" style="background-image: url('https://i.postimg.cc/W3d9b1xP/history-1.jpg');">
+                            <div class="content">
+                                <h4>Sen začíná</h4>
+                                <p>Náš zakladatel, Marco Bianchi, přivezl cenné rodinné recepty z Neapole do Prahy a otevřel malou trattorii s velkým srdcem.</p>
+                            </div>
+                        </div>
+                        <div id="history-2005" class="history-content-item" style="background-image: url('https://i.postimg.cc/8cM6yLg4/history-2.jpg');">
+                            <div class="content">
+                                <h4>Nový domov</h4>
+                                <p>Přestěhovali jsme se do naší současné, prostornější lokality v historickém centru města, což nám umožnilo přivítat více hostů do naší rodiny.</p>
+                            </div>
+                        </div>
+                        <div id="history-2015" class="history-content-item" style="background-image: url('https://i.postimg.cc/J7Bv9GgT/history-3.jpg');">
+                             <div class="content">
+                                <h4>Ocenění</h4>
+                                <p>Cafe Italia byla oceněna jako "Nejlepší italská restaurace v Praze", což je důkazem naší neochvějné oddanosti kvalitě a autentičnosti.</p>
+                            </div>
+                        </div>
+                        <div id="history-2024" class="history-content-item" style="background-image: url('https://i.postimg.cc/prG7G0W3/history-4.jpg');">
+                             <div class="content">
+                                <h4>Pohled do budoucna</h4>
+                                <p>Pokračujeme v inovacích a zároveň ctíme tradici, představujeme nová sezónní menu a rozšiřujeme naši nabídku vín, abychom potěšili naše hosty.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="gallery-section">
+            <div class="gallery-header section-header">
+                 <h4 class="section-subheader">Nahlédnutí dovnitř</h4>
+                 <h2 class="section-title light">Zažijte naši atmosféru</h2>
+            </div>
+            <div class="gallery-container">
+                <div class="gallery-panel" style="background-image: url('https://i.postimg.cc/PJF7zPQP/interier1.jpg');" data-type="interior-360">
+                    <div class="panel-content">
+                        <h3>Virtuální prohlídka</h3>
+                        <a href="#" class="action-link">Prozkoumat interiér</a>
+                    </div>
+                </div>
+                <div class="gallery-panel" style="background-image: url('https://i.postimg.cc/yY4G9gmJ/CHLEB-SOUP.jpg');" data-type="photo-gallery">
+                     <div class="panel-content">
+                        <h3>Fotogalerie</h3>
+                        <a href="#" class="action-link">Zobrazit fotografie</a>
+                    </div>
+                </div>
+                <div class="gallery-panel" style="background-image: url('https://i.postimg.cc/W3Y8xxFy/exterier1.jpg');" data-type="exterior-360">
+                     <div class="panel-content">
+                        <h3>Týnský dvůr</h3>
+                        <a href="#" class="action-link">Prozkoumat exteriér</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="gallery-modal-overlay">
+            <div class="gallery-modal-content">
+                <button class="modal-close-btn">&times;</button>
+                <div class="modal-iframe-container" id="modal-iframe-container"></div>
+                <div class="modal-photo-grid" id="modal-photo-grid"></div>
+            </div>
+        </div>
+        
+        <!-- Contact Section -->
+        <section id="contact" class="section contact-section">
+            <div class="container">
+                <div class="contact-layout">
+                    <div class="contact-info fade-in-up">
+                        <h4 class="section-subheader">Spojte se s námi</h4>
+                        <h2 class="section-title">Navštivte nás</h2>
+                        <p style="margin-bottom: 3rem; color: var(--color-text-muted);">Rádi Vás přivítáme. Pro rezervace nebo dotazy nás prosím kontaktujte přímo telefonicky nebo e-mailem.</p>
+                        
+                        <div class="contact-info-item">
+                            <i data-feather="map-pin"></i>
+                            <div>
+                                <h4>Adresa</h4>
+                                <p>Staroměstské nám. 12, 110 00 Staré Město, Praha, Česko</p>
+                            </div>
+                        </div>
+                        <div class="contact-info-item">
+                            <i data-feather="phone"></i>
+                            <div>
+                                <h4>Telefon</h4>
+                                <p>+420 123 456 789</p>
+                            </div>
+                        </div>
+                        <div class="contact-info-item">
+                            <i data-feather="mail"></i>
+                            <div>
+                                <h4>E-mail</h4>
+                                <p>rezervace@cafeitalia.cz</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="map-container fade-in-up" style="transition-delay: 0.2s;">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2560.032139886989!2d14.420038377033166!3d50.08781831414036!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470b94e982a33309%3A0x44883b2193e17637!2sStarom%C4%9Bstsk%C3%A9%20n%C3%A1m.%2012%2C%20110%2000%20Star%C3%A9%20M%C4%9Bsto%2C%20Czechia!5e0!3m2!1sen!2scz!4v1679412345678!5m2!1sen!2scz" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <img src="https://i.postimg.cc/k4DP2vLw/cafe-italia-logo.png" alt="Cafe Italia Logo" class="footer-logo">
+                    <p>Oslavujeme umění italské kuchyně v srdci Prahy. Připojte se k nám pro nezapomenutelný zážitek chuti, tradice a pohostinnosti.</p>
+                </div>
+                <div class="footer-widget">
+                    <h4>Rychlé odkazy</h4>
+                    <ul class="footer-links">
+                        <li><a href="#about">O nás</a></li>
+                        <li><a href="#menu">Menu</a></li>
+                        <li><a href="#services">Služby</a></li>
+                        <li><a href="#gallery">Galerie</a></li>
+                    </ul>
+                </div>
+                <div class="footer-widget">
+                    <h4>Právní informace</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Zásady ochrany osobních údajů</a></li>
+                        <li><a href="#">Podmínky použití</a></li>
+                        <li><a href="#">Informace o alergenech</a></li>
+                    </ul>
+                </div>
+                <div class="footer-widget">
+                    <h4>Sledujte nás</h4>
+                    <p style="color: #aaa; margin-bottom: 1.5rem;">Zůstaňte ve spojení pro nejnovější zprávy a nabídky.</p>
+                    <div class="footer-socials">
+                        <a href="#"><i data-feather="facebook"></i></a>
+                        <a href="#"><i data-feather="instagram"></i></a>
+                        <a href="#"><i data-feather="twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Cafe Italia. Všechna práva vyhrazena. Vytvořeno s vášní.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        // Feather Icons Initialization
+        feather.replace();
+
+        // Preloader Logic
+        const preloader = document.querySelector('.preloader');
+        window.addEventListener('load', () => {
+            preloader.classList.add('hidden');
+        });
+
+        // Sticky Header Logic
+        const header = document.querySelector('.main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Hero Slideshow Logic
+        const slides = document.querySelectorAll('.hero-slide');
+        let currentSlide = 0;
+        const slideInterval = 5000; // 5 seconds
+
+        function nextSlide() {
+            if (slides.length === 0) return;
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+        setInterval(nextSlide, slideInterval);
+
+        // History Section Timeline Logic
+        const timelineYears = document.querySelectorAll('.timeline-year');
+        const historyItems = document.querySelectorAll('.history-content-item');
+
+        timelineYears.forEach(year => {
+            year.addEventListener('click', () => {
+                const targetId = `history-${year.dataset.target}`;
+                
+                // Update active class on timeline
+                timelineYears.forEach(y => y.classList.remove('active'));
+                year.classList.add('active');
+                
+                // Update active class on content
+                historyItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.id === targetId) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+        });
+        
+        // Scroll-triggered Fade-in Animations
+        const faders = document.querySelectorAll('.fade-in-up');
+        const appearOptions = {
+            threshold: 0.15,
+            rootMargin: "0px 0px -50px 0px"
+        };
+        const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    return;
+                } else {
+                    entry.target.classList.add('visible');
+                    appearOnScroll.unobserve(entry.target);
+                }
+            });
+        }, appearOptions);
+
+        faders.forEach(fader => {
+            appearOnScroll.observe(fader);
+        });
+
+        // Smooth scrolling for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetElement = document.querySelector(this.getAttribute('href'));
+                if(targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // --- Gallery Logic ---
+        const gallerySection = document.getElementById('gallery');
+        if(gallerySection) {
+            const galleryPanels = document.querySelectorAll('.gallery-panel');
+            const modalOverlay = document.querySelector('.gallery-modal-overlay');
+            const modalCloseBtn = document.querySelector('.modal-close-btn');
+            const iframeContainer = document.getElementById('modal-iframe-container');
+            const photoGridContainer = document.getElementById('modal-photo-grid');
+
+            const contentData = {
+                'interior-360': {
+                    type: 'iframe',
+                    payload: '<iframe src="https://www.google.com/maps/embed?pb=!4v1718742426875!6m8!1m7!1sCAoSLEFGMVFpcE5yVDRWc3lRMXRsdG42SE1wRnA2X1h2b0NIZU5WazctaExsMVZn!2m2!1d50.087799074853!2d14.422204481084!3f233.58288544490226!4f-12.721243542284918!5f0.7820865974627469" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'
+                },
+                'exterior-360': {
+                     type: 'iframe',
+                    payload: '<iframe src="https://www.google.com/maps/embed?pb=!4v1718742512134!6m8!1m7!1sCAoSLEFGMVFpcE5ZVWgzc0txZmpyM25tV1VzcUJaUkZLR1p6WFFZWGZpZGVSd01j!2m2!1d50.0878152!2d14.4221161!3f324.78!4f-2.970000000000006!5f0.7820865974627469" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'
+                },
+                'photo-gallery': {
+                    type: 'photos',
+                    payload: [
+                        'https://i.postimg.cc/tRVfYtxQ/SVATBA.jpg',
+                        'https://i.postimg.cc/DZRMxmRM/CATERING.jpg',
+                        'https://i.postimg.cc/yY4G9gmJ/CHLEB-SOUP.jpg',
+                        'https://i.postimg.cc/nh9y2Y5Z/interier6.jpg',
+                        'https://i.postimg.cc/PJF7zPQP/interier1.jpg',
+                        'https://i.postimg.cc/65qJ2Nf8/drinks3.jpg'
+                    ]
+                }
+            };
+            function openModal(type) {
+                const data = contentData[type];
+                if (!data) return;
+                iframeContainer.innerHTML = '';
+                photoGridContainer.innerHTML = '';
+                iframeContainer.style.display = 'none';
+                photoGridContainer.style.display = 'none';
+                if (data.type === 'iframe') {
+                    iframeContainer.innerHTML = data.payload;
+                    iframeContainer.style.display = 'block';
+                } else if (data.type === 'photos') {
+                    let photoHTML = '';
+                    data.payload.forEach(url => {
+                        photoHTML += `<img src="${url}" alt="Cafe Italia Fotogalerie">`;
+                    });
+                    photoGridContainer.innerHTML = photoHTML;
+                    photoGridContainer.style.display = 'grid';
+                }
+                modalOverlay.classList.add('active');
+            }
+            function closeModal() {
+                modalOverlay.classList.remove('active');
+            }
+            galleryPanels.forEach(panel => {
+                panel.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const type = panel.dataset.type;
+                    openModal(type);
+                });
+            });
+            modalCloseBtn.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) {
+                    closeModal();
+                }
+            });
+        }
+
+    });
+    </script>
+</body>
+</html>
